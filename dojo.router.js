@@ -5,14 +5,6 @@ var Router = (function(){
     var publish = dojo.publish;
     var forEach = dojo.forEach;
 
-    function isEmpty( obj ) {
-        for( var prop in obj ) {
-            if( obj.hasOwnProperty( prop ) )
-            return false;
-        }
-        return true;
-    }
-
     function Router( initial ) {
         var self = {};
         var PATH_REPLACER = "([^\/]+)";
@@ -71,7 +63,7 @@ var Router = (function(){
                             query[ key ] = params[ key ];
                         }
                     }
-                    if( !isEmpty( query  ) ) {
+                    if( dojo.toJson( query  ) !== "{}" ) {
                         url = url + '?' + dojo.objectToQuery( query );
                     }
                     return url;
