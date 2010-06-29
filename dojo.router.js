@@ -2,6 +2,9 @@ var Router = (function(){
 
     dojo.require( 'dojo.hash' );
 
+    var publish = dojo.publish;
+    var forEach = dojo.forEach;
+
     function isEmpty( obj ) {
         for( var prop in obj ) {
             if( obj.hasOwnProperty( prop ) )
@@ -59,7 +62,7 @@ var Router = (function(){
             var query = {};
             while( entry = self.routes[ i ] ) {
                 if( entry.name === name ) {
-                    var url = entry.originalPath;
+                    var url = '#' + entry.originalPath;
                     for( var key in params || {} ) {
                         segment_key = ':' + key;
                         if( url.indexOf( segment_key ) > -1 ) {
@@ -89,7 +92,7 @@ var Router = (function(){
                         // first match is the full path
                         path_params.shift( );
                         // for each of the matches
-                        dojo.forEach( path_params, function( param, i ) {
+                        forEach( path_params, function( param, i ) {
                             // if theres a matching param name
                             if( entry.param_names[ i ] ) {
                                 // set the name to the match
@@ -97,8 +100,8 @@ var Router = (function(){
                             }
                         } );
                     }
-                    dojo.publish( 'router/' + entry.name, [ params ] );
-                    dojo.publish( 'router/-run-route', [ url, entry.name, params ] );
+                    publish( 'router/' + entry.name, [ params ] );
+                    publish( 'router/-run-route', [ url, entry.name, params ] );
                 }
                 i++;
             }
